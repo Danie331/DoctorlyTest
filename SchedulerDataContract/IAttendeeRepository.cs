@@ -6,6 +6,6 @@ namespace SchedulerDataContract
 {
     public interface IAttendeeRepository
     {
-        Task AddAsync(Attendee attendee);
+        Task<Attendee> AddAsync(Attendee attendee);
     }
 }

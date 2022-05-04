@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 using SchedulerServiceContract;
+using System.Net;
 using System.Threading.Tasks;
 using Domain = SchedulerDomainModels;
 
@@ -16,13 +18,13 @@ namespace SchedulingService.Controllers.V1
             _eventService = eventService;
         }
 
-        [HttpPost, Route("add")]
+        [HttpPost, Route("add"), SwaggerResponse(HttpStatusCode.OK, typeof(ModelDto.EventDto)), SwaggerResponse(HttpStatusCode.InternalServerError, typeof(ModelDto.ApiError))]
         public async Task<IActionResult> CreateEvent([FromBody] ModelDto.EventDto eventDto)
         {
             var @event = ToDomain<Domain.Event, ModelDto.EventDto>(eventDto);
-            await _eventService.AddAsync(@event);
+            var result = await _eventService.AddAsync(@event);
 
-            return Ok();
+            return Ok(ToDto<ModelDto.EventDto, Domain.Event>(result));
         }
 
         [HttpPut, Route("update")]

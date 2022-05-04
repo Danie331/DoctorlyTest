@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 using SchedulerServiceContract;
+using System.Net;
 using System.Threading.Tasks;
 using Domain = SchedulerDomainModels;
 
@@ -17,13 +19,13 @@ namespace SchedulingService.Controllers.V1
             _attendeeService = attendeeService;
         }
 
-        [HttpPost, Route("add")]
+        [HttpPost, Route("add"), SwaggerResponse(HttpStatusCode.OK, typeof(ModelDto.AttendeeDto)), SwaggerResponse(HttpStatusCode.InternalServerError, typeof(ModelDto.ApiError))]
         public async Task<IActionResult> CreateAttendee([FromBody] ModelDto.AttendeeDto attendeeDto)
         {
             var attendee = ToDomain<Domain.Attendee, ModelDto.AttendeeDto>(attendeeDto);
-            await _attendeeService.AddAsync(attendee);
+            var attendeeResult = await _attendeeService.AddAsync(attendee);
 
-            return Ok();
+            return Ok(ToDto<ModelDto.AttendeeDto, Domain.Attendee>(attendeeResult));
         }
     }
 }

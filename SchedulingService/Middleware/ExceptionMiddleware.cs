@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using SchedulingService.ModelDto;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -37,10 +38,9 @@ namespace SchedulingService.Middleware
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            return context.Response.WriteAsync(JsonConvert.SerializeObject(new
+            return context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiError
             {
-                context.Response.StatusCode,
-                Message = $"Internal Server Error: {responseMessage}"
+                 FriendlyErrorMessage = responseMessage
             }));
         }
     }

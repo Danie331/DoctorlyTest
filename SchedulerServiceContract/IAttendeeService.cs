@@ -6,6 +6,6 @@ namespace SchedulerServiceContract
 {
     public interface IAttendeeService
     {
-        Task AddAsync(Attendee attendee);
+        Task<Attendee> AddAsync(Attendee attendee);
     }
 }

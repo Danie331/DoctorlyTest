@@ -7,7 +7,7 @@ namespace SchedulerServiceContract
 {
     public interface IEventService
     {
-        Task AddAsync(Event @event);
+        Task<Event> AddAsync(Event @event);
         Task UpdateAsync(Event @event);
         Task CancelAsync(int id);
         Task<Event> SearchByIdAsync(int id);

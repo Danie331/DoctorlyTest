@@ -1,6 +1,8 @@
 ﻿
+using SchedulerDataContract;
 using SchedulerDomainModels;
 using SchedulerServiceContract;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,9 +10,26 @@ namespace SchedulerServices.V1
 {
     public class EventService : IEventService
     {
-        public Task AddAsync(Event @event)
+        private readonly IEventRepository _eventRepository;
+        public EventService(IEventRepository eventRepository)
         {
-            throw new System.NotImplementedException();
+            _eventRepository = eventRepository;
+        }
+
+        public async Task<Event> AddAsync(Event @event)
+        {
+            try
+            {
+                var result = await _eventRepository.AddAsync(@event);
+
+                // Validation can optionally be performed here to ensure the result is a valid domain object
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // Log exception for service context here  
+                throw;
+            }
         }
 
         public Task CancelAsync(int id)
